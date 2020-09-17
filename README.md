@@ -1,4 +1,4 @@
 # Semester Project
 
-## Student name
+## Student's name
 
