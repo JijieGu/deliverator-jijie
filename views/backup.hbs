@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+  </head>
+   <body>
+     <h1>{{welcomMsg}}</h1>        
+
+      <form action = "/KFC" method = "POST">
+
+         <!-- Lables for operation type and radio buttons to select type -->
+         <label for="KFC">Consumer</label>
+         <input type="radio"  name="merchant" id="KFC" value="KFC"><br>
+         
+         <input type="submit"  name="submit" value="Submit"><br>
+         <!-- Reset clears all inputs -->
+       	 <input type="reset" name="reset" value="Reset"><br>
+
+         
+      </form>
+
+      <form action = "/pizzaHut" method = "POST">
+
+         <!-- Lables for operation type and radio buttons to select type -->
+         <label for="pizzaHut">Consumer</label>
+         <input type="radio"  name="merchant" id="pizzaHut" value="Pizza Hut"><br>
+         
+         <input type="submit"  name="submit" value="Submit"><br>
+         <!-- Reset clears all inputs -->
+       	 <input type="reset" name="reset" value="Reset"><br>
+
+         you are : {{user}}
+      </form>
+
+
+
+   </body>
+</html>
