@@ -276,6 +276,7 @@ app.get('/conMain', (req,res) =>{
      });
      logger.crit("log in attempted through GET request");
   })
+  
 //use cookie example
 // app.post('/yourhome', (req, res) =>{
 //     var userType = req.body.userType;
