@@ -16,15 +16,15 @@ const pg = require("pg");
  * id 
  */
 class DBOperations {
-
+    
 
 
     pool =  new pg.Pool({
-        database:"skidmore",
-        user:"postgres", 
-        password:"postgres", 
-        host:"127.0.0.1", 
-        port:'5432'
+        database: process.env.DB_DATABASE || "skidmore",
+        user: process.env.DB_USER ||"postgres", 
+        password: process.env.DB_PASSWORD||"postgres", 
+        host: process.env.DB_HOST||"127.0.0.1", 
+        port: process.env.DB_PORT||5432
     });
 
     isAuthenticated(username, password, tableName){
