@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+ <html><head><title>{{title}}</title>
+ <style>
+.error {
+         color:red; 
+}
+ </style>
+ 
+ </head>
+ <body>
+ <h1>Your are {{userType}}, Welcome. Please log in<h1>
+ <h4 class="error">{{errorMsg}}</h4>   
+
+ <form action = "/consumerMain" method = "POST">
+         Username: <input type = "text" name = "username"> <br>
+         Password : <input type = "password" name = "password"> <br>
+
+         <input type="submit"  name="enter" value="Enter"><br>
+         <!-- Reset clears all inputs -->
+       	 <input type="reset" name="reset" value="Reset"><br>
+
+        
+      </form>
+ <br/><h2><a href="/index">Back to Log in Page</a></h2>
+ <h3><a href="/registrationConsumer">Registration Consumer </a></h3>
+  <h2><a href='/logout'>Logout </a></h2>
+ </body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+ <html><head><title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </head>
+ <body>
+ <h1>Hello {{username}}!<h1>
+ <h1>You have the following orders: <h1>
+
+
+<div class="container">
+  
+    
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Consumer ID</th>
+        <th>Items Bought</th>
+        <th>Order Time</th>
+      </tr>
+    </thead>
+    <tbody>
+        {{#each orders as |order|}}
+                <tr>
+                    <td>{{order.id}}</td>
+                    <td>{{order.consumer_id}}</td>
+                    <td>
+                        <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        See Items
+                    </button>
+                        <div class="dropdown-menu">
+                             {{#each order.items as |item|}}
+                             <a class="dropdown-item" href="#">{{item.item_name}}- ${{item.price}}</a>
+                             {{/each}}         
+                        </div>
+                        </div>
+                    </td>
+                    <td>{{order.order_time}}</td>
+                </tr>
+         {{/each}}
+    </tbody>
+  </table>
+</div>
+
+
+
+ <br/><h2><a href=\index.hbs\>Log in Page</a></h2>
+  <h2><a href='/logout'>Logout</a></h2>
+ </body></html>

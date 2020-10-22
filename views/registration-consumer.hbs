@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    
+    form{
+      margin-top: 15%;
+      width: 50%;
+    }
+    div input {
+      float:right;
+    }
+
+  </style>
+  </head>
+   <body>
+     <div class="container">
+    
+       <div class = "topContent">
+         <br>
+       <h2> Registration Consumer</h2>    
+       
+     <form  method = "POST" >
+       <div class='form-group'>
+          <label for="firstName" >First Name:</label>
+          <input type = "text"  name ="firstName"  id ="firstName" >
+       </div>
+
+        <div class='form-group'>
+          <label for="username" >Username:</label> 
+         <input type = "text" name = "username" id="username">
+
+        </div>
+       
+
+        <div class='form-group'>
+         <label for="password" >Password: </label> 
+         <input type = "password" name = "password" id="password" onchange="validatePassword(this, 'password1')"> 
+          
+        </div>
+
+
+         <div class='form-group'>
+         
+         <label for="confirmationpassword" >Confirmation Password: </label> 
+        <input type = "password" name = "confirmationpassword" id = "confirmationpassword"  onchange="validatePassword(this, 'password2')" > 
+     
+
+         </div>
+
+         <input type="submit" class="btn btn-success" value="Register Consumer">
+      </form>
+        
+       </div>
+         <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+      <h2><a href="/consumerLogin">Login Consumer Page</a></h2>
+ 
+
+<script>
+    var password1 = '', password2 = '';
+    var validPasswords = false; 
+    function validatePassword(doc, passwordNumber){
+        if (password1 = 'password1'){
+            password1 = $(doc).val();
+            
+        }else{
+            password2 =  $(doc).val();
+        }
+       validPasswords = (password1 == password2)  && password1 != "" && password2 != ""; 
+    }
+
+    
+</script>
+ </body>
+</html>

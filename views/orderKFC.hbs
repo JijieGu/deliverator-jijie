@@ -1,17 +1,140 @@
 <html>
   <head>
     <title>{{title}}</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    .available, .cart {
+      width:50%;
+      float: left;
+     
+    }
+    .cart {
+       border-left: 3px solid blueviolet;
+    }
+    .available {
+       border-right: 3px solid yellow;
+    }
+    .topContent {
+      text-align: center;
+      margin-bottom:100px; 
+      margin-top:40px; 
+    }
+    .topContent input {
+      float: right;
+    }
+
+
+  </style>
   </head>
    <body>
+     <div class="container">
      <h1>{{welcomMsg}}</h1>        
 
-      <h2> Welcome to KFC user: {{user}}</h2><b>
-    
-       <h2>your order and price is now stored in your session cookie. If you refresh the page you will see</h2> <b>
-    
+      <h2> Welcome to KFC!</h2><b>
+  
+
+       <div class = "topContent">
+       <h2> Food to pick From</h2>    
+       <p>Total Price: <span id="price">$0</span></p>
+       
+ <form  method = "POST">
+         <input type = "hidden" name = "customer_id" value= {{customer_id}}> 
+         <input type = "hidden" name = "items" id="item_form">
+         <input type="submit" class="btn btn-success food" value="Place Order">
+      </form>
         
-       <h2>they are {{order}} for {{price}}$</h2></b>
+       </div>
+ 
 
 
+  <div>
+    <div class='available'> 
+       <h5>Available Foods - Click to Add to Cart</h5>
+          <button type="button" class="btn btn-success food"><span  class="itemName">Wings</span>-$<span class='price'>3</span></button>
+  <button type="button" class="btn btn-info food" ><span class="itemName">Fries</span>-$<span class='price'>2</span></button>
+  <button type="button" class="btn btn-warning food"><span  class="itemName">Thighs</span>-$<span class='price'>4</span></button>
+  <button type="button" class="btn btn-danger food"><span  class="itemName">Coke</span>-$<span class='price'>1</span></button>
+  <button type="button" class="btn btn-dark food"><span  class="itemName">ice cream</span>-$<span class='price'>2</span></button>
+  <button type="button" class="btn btn-light food"><span class="itemName">Chicken and Waffle</span>-$<span class='price'>6</span></button>
+    </div>
+
+    <!-- Items that are chosen-->
+    <div  class='cart'>
+      <h5>Cart Items - Click to Remove from Cart</h5>
+    </div>
+     </div>
+
+     </div>
+
+     <script>
+
+       $(document).ready(function(){
+          $("button").click(function(){
+            var parentClass = $(this).parent().attr("class"); 
+
+            moveItem(this, parentClass == "cart" ? ".available" : ".cart");
+          });
+          
+
+
+          function moveItem(jqueryEle, destinationClass){
+           var item_db = {};
+             var tempContent = $(jqueryEle)[0].outerHTML; // entire Content 
+             let removeCart = false; 
+             if (destinationClass == ".cart"){
+                  // sum all the elements of the foods in the cart 
+                  var sum = 0; 
+                  // looking at existing cart... 
+                  $(".cart button").each(function(index, ele){
+                    sum += getPriceAndItemName(ele, item_db, sum); 
+              
+                  });
+
+                  // add sum to transition which has not bee n added 
+                 sum += getPriceAndItemName(jqueryEle, item_db, sum); 
+                  $("#item_form").val(JSON.stringify(item_db));
+                  $("#price").text(`$${sum}`);
+
+                 }else { // cart to availbility 
+                    removeCart = true; 
+                 }
+                 // remove the element from this cart and copy the contents. 
+            $(jqueryEle).remove();
+            var button = $(tempContent);
+            button.click(function(){
+            var parentClass = $(this).parent().attr("class");
+            moveItem(this, parentClass == "cart" ? ".available" : ".cart");
+           
+            }); 
+            $(destinationClass).append(button);
+            if (removeCart){
+              // sum all the current foods 
+               let sum = 0;
+                     $(".cart button").each(function(index, ele){
+                        sum += getPriceAndItemName(ele, item_db, sum); 
+                                  });
+                   $("#item_form").val(JSON.stringify(item_db));
+                   
+                  $("#price").text(`$${sum}`);
+            }
+          }
+
+          function getPriceAndItemName(ele, item_db_json, sum){
+                    var currentPrice  =parseInt($(ele).find("span.price").text());
+                    //ssum+= currentPrice;
+                    var itemName = $(ele).find("span.itemName").text();
+                    item_db_json[itemName] = currentPrice;
+                    return currentPrice; 
+          }
+
+
+       }); // document ready 
+     
+        </script>
    </body>
 </html>
