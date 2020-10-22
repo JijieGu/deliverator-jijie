@@ -5,10 +5,102 @@ var request = require("supertest");
 const app = require('../delivery').app;
 // Load the expect library - common name for variable is "expect"
 const expect = require('expect');
+
+//GET tests
 var url = "/registrationConsumer"; 
 console.log(url); 
-describe('Test 1 ', function(){
-    it("Home Page Test", function(done){
+describe('Test GET Consumer Reg ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/registrationMerchant"; 
+console.log(url); 
+describe('Test GET merchant Reg ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/consumerMain"; 
+console.log(url); 
+describe('Test GET consumerMain not logged in ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/merchantMain"; 
+console.log(url); 
+describe('Test GET merchantMain not logged in ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+
+url = "/orderKFC"; 
+console.log(url); 
+describe('Test GET orderKFC not logged in', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/orderPizzaHut"; 
+console.log(url); 
+describe('Test GET orderPizzaHut not logged in', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/consumerLogin"; 
+console.log(url); 
+describe('Test GET consumerLogin ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+
+url = "/merchantLogin"; 
+console.log(url); 
+describe('Test GET merchantLogin ', function(){
+    it("Test", function(done){
+        request(app)
+            .get(url)
+            .expect(200)
+            .end(done);
+    });
+})
+
+url = "/"; 
+console.log(url); 
+describe('Test GET index page ', function(){
+    it("Test", function(done){
         request(app)
             .get(url)
             .expect(200)
@@ -18,102 +110,11 @@ describe('Test 1 ', function(){
 
 
 
-// only get method. Not post.
-url = "/logout"; 
-
-
-describe('Test 2 ', function(){
-    it("logout Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
+//POST test
 
 
 
-
-
-url = "/consumerLogin"; 
-
-describe('Test 3 ', function(){
-    it("consumer login Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-url = "/merchantLogin"; 
-
-describe('Test 4 ', function(){
-    it("merchant login Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-
-url = "/registrationMerchant"; 
-
-describe('Test 5 ', function(){
-    it("merchant registration Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-url = "/registrationConsumer"; 
-
-describe('Test 6 ', function(){
-    it("consumer registration Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-url = "/consumerMain"; 
-
-describe('Test 7 ', function(){
-    it("consumer main Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-
-url = "/merchantMain"; 
-
-describe('Test 8 ', function(){
-    it("merchant main Page Test", function(){
-        request(url, function(err, res, body){
-            console.log(err); 
-            console.log(res);
-            assert.strictEqual(res.statusCode, 200); 
-        })
-    });
-})
-
-
-
-
-describe('Test 9 ', function(){
+describe('Consumer log in with valid credential ', function(){
     it("Login Page", function(done){
         request(app)
             .post("/consumerMain")
@@ -124,9 +125,20 @@ describe('Test 9 ', function(){
 })
 
 
-url = "/orderKFC"; 
+describe('Consumer log in with invalid credential ', function(){
+    it("Login Page", function(done){
+        request(app)
+            .post("/consumerMain")
+            .send("username=12&password=12")
+            .expect(302)
+            .expect((resp) => {
+                expect(resp.text.indexOf("failed_login")).toBeGreaterThanOrEqual(0);
+              })
+            .end(done);
+    });
+})
 
-url = "/orderPizzaHut"; 
+
 
 
 

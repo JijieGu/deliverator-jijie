@@ -107,28 +107,43 @@ if (process.env.NODE_ENV !== 'production') {
 
 //log in page
 app.get('/', function (req, res) {
+    try{
     res.status(200);
     res.render('index.hbs', {
       title: "Log in Page",
       welcomMsg: "Welcome to Deliverator"
       
      });
+    }catch (err){
+      logger.error("Error occured at GET to log in page");
+      redirectToLogin(res, err.message, "500 Error Page", err.mess);
+    }
   })
 
 app.get('/index', function (req, res) {
+    try{
     res.status(200);
     res.redirect('/');
+    }catch (err){
+      logger.error("Error occured at GET to index page");
+      redirectToLogin(res, err.message, "500 Error Page", err.mess);
+    }
   })
 
 app.get('/logout', function (req, res) {
+    try{
     res.clearCookie('user_sid');
     res.redirect('/');
+    }catch (err){
+      logger.error("Error occured at GET to logout page");
+      redirectToLogin(res, err.message, "500 Error Page", err.mess);
+    }
   })
 
   //todo make .get("consumerLogin.hbs") redirect 
 //going to each home page
 app.get('/consumerLogin', function (req, res) {
-  
+    try{
     res.status(200);
 
     res.render('consumerLogin.hbs', {
@@ -136,24 +151,39 @@ app.get('/consumerLogin', function (req, res) {
       userType: "consumer",
       errorMsg: req.query.error
      });
+    }catch (err){
+      logger.error("Error occured at GET to consumer log in page");
+      redirectToLogin(res, err.message, "500 Error Page", err.mess);
+    }
   })
+
 app.get('/merchantLogin', function (req, res) {
- 
+    try{
     res.status(200);
     res.render('merchantLogin.hbs', {
         title: "Merchant Log in Page",
         userType: "merchant"
        });
+      }catch (err){
+        logger.error("Error occured at GET to merchant log in page");
+        redirectToLogin(res, err.message, "500 Error Page", err.mess);
+      }
   })
 
   app.get('/registrationMerchant', function (req, res) {
+    try{
     res.render('registration-merchant.hbs', {
         title: "Merchant Registration",
         userType: "merchant"
        });
+      }catch (err){
+        logger.error("Error occured at GET to merchant registration page");
+        redirectToLogin(res, err.message, "500 Error Page", err.mess);
+      }
   })
 
   app.post('/registrationMerchant', function (req, res) {
+    try{
     // TODO DB unique constraint on database column of stores 
     // rename these files! 
     // changeAll urls to have no .hbs
@@ -171,29 +201,33 @@ app.get('/merchantLogin', function (req, res) {
           userType: "Merchant"
          });
     }); 
+
+  }catch (err){
+    logger.error("Error occured at POST to merchant registration page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
   })
 
 
   
   app.get('/registrationConsumer', function (req, res) {
     try {
-     // y.toLowerCase(); 
+     
       res.render('registration-consumer.hbs', {
         title: "Consumer Registration",
         userType: "consumer"
        });
     }catch (err){
+      logger.error("Error occured at GET to consumer registration page");
       redirectToLogin(res, err.message, "500 Error Page", err.mess); 
 
     }
    
   })
-
-
-  
+ 
   
   app.post('/registrationConsumer', function (req, res) {
-
+    try{
     
     let usernm = req.body.username;
     let password = req.body.password;
@@ -202,11 +236,16 @@ app.get('/merchantLogin', function (req, res) {
     db.addConsumer(usernm, password, firstName).then (result => {
       res.redirect('/consumerLogin'); 
     });
+  }catch (err){
+    logger.error("Error occured at POST to consumer registration page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
 
   });
 
 //after log in the main page of consumer
 app.post('/consumerMain', function (req, res) {
+    try{
 
     let usernm = req.body.username;
     let passwword = req.body.password;
@@ -239,14 +278,18 @@ app.post('/consumerMain', function (req, res) {
        }
       
    });
-   
 
+   
+  }catch (err){
+    logger.error("Error occured at POST to consumer main page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
     
 
   })
 //after log in the main page of merchant
 app.post('/merchantMain', function (req, res) {
-
+  try{
   let usernm = req.body.username;
   let passwword = req.body.password;
   let authenticated  = false; 
@@ -269,30 +312,51 @@ app.post('/merchantMain', function (req, res) {
       
       
     }); // then promise 
+  
+  }catch (err){
+    logger.error("Error occured at POST to merchant main page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
+
   });
   
 
 
     
       app.get('/orderKFC', function (req, res) {
+      try{
         res.status(200);
         if (!req.session.userid){
           redirectToLogin(res);
         }else {
           res.render('orderKFC.hbs', {"customer_id":req.session.userid});
         }
+      }catch (err){
+              logger.error("Error occured at GET to orderKFC page");
+              redirectToLogin(res, err.message, "500 Error Page", err.mess);
+      }
       }); 
 
       app.get('/orderPizzaHut', function (req, res) {
+        try{
+
         res.status(200);
         if (!req.session.userid){
           redirectToLogin(res);
         }else {
           res.render('orderPizzaHut.hbs', {"customer_id":req.session.userid});
         }
+
+      }catch (err){
+        logger.error("Error occured at GET to orderPizzahut page");
+        redirectToLogin(res, err.message, "500 Error Page", err.mess);
+      }
+
       }); 
   //KFC order display Page with new session
 app.post('/orderKFC', function (req, res) {
+  try{
+
     var item_json = req.body.items;
     let parsed_json = [];
     let js = JSON.parse(item_json);
@@ -309,10 +373,16 @@ app.post('/orderKFC', function (req, res) {
       res.redirect('/consumerMain?order_status=Success');
       
    });
+
+  }catch (err){
+    logger.error("Error occured at POST to orderKFC page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
   })
 
 //Pizza hut order display page with new session
 app.post('/orderPizzaHut', function (req, res) {
+  try{
 
   var item_json = req.body.items;
     let parsed_json = [];
@@ -330,23 +400,37 @@ app.post('/orderPizzaHut', function (req, res) {
       res.redirect('/consumerMain?order_status=Success');
       
    });
+
+  }catch (err){
+    logger.error("Error occured at POST to orderPizzahut page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
      }); 
 
 
 
-//GET error page for three main pages!
+    //consumer main page
 app.get('/consumerMain', (req,res) =>{
+  try{
+
   console.log("User Id ", req.session.userid);
   if (req.session.userid == undefined){
     redirectToLogin(res);
   }
   else {
+    
     res.render(`consumerMain.hbs`) ; // ${req.query.error_msg || ""}&order_status=${req.query.order_status || ""}`);
   }
-    
+
+}catch (err){
+  logger.error("Error occured at GET to consumer main page");
+  redirectToLogin(res, err.message, "500 Error Page", err.mess);
+}
    
   })
+  //merchant page
   app.get('/merchantMain', (req,res) =>{
+    try{
    
     if ( req.session.role == "CONSUMER"){
       res.render('getError.hbs', {
@@ -372,7 +456,11 @@ app.get('/consumerMain', (req,res) =>{
         
       });
     }
-   
+  }catch (err){
+    logger.error("Error occured at GET to merchant main page");
+    redirectToLogin(res, err.message, "500 Error Page", err.mess);
+  }
+
   })
  //catching 404, must be the very last route
   app.get("*", function(req, res){
@@ -392,35 +480,6 @@ app.get('/consumerMain', (req,res) =>{
   
 
  
-//use cookie example
-// app.post('/yourhome', (req, res) =>{
-//     var userType = req.body.userType;
-
-  
-//     var optionsUnsigned = {
-//         maxAge: 1000 * 60 * 15, // Expires after 15 minutes
-//         httpOnly: true, // The cookie only accessible by the web server
-//         signed: false // Indicates if the cookie should be signed
-  
-//     };
-//     res.status(200);
-//     res.cookie("Pre", userType, optionsUnsigned);
-  
-  
-//     res.render('yourhome.hbs', {
-//       title: "home",
-//       userType: userType
-//      });
-//   })
 
   module.exports.app = app;
 
-  /**
-   *     var optionsUnsigned = {
-   
-       maxAge: 1000 * 60 * 15, // Expires after 15 minutes
-       httpOnly: true, // The cookie only accessible by the web server
-       signed: false // Indicates if the cookie should be signed
-     
-   };
-   */
